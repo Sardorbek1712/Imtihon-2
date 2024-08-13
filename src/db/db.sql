@@ -1,11 +1,11 @@
-CREATE TABLE category (
+CREATE TABLE category(
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   image_url VARCHAR(255) NOT NULL,
-  category_id INT
-);
+  category_id INT,
 
-FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE;
+  FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
+);
 
 
 
@@ -72,38 +72,32 @@ CREATE TABLE contract_type (
     percentage INT
 );
 
+CREATE TYPE contract_status AS ENUM ('canceled', 'pending', 'completed', 'payed');
 CREATE TABLE contract (
     id SERIAL PRIMARY KEY,
     customer_id INT,
     order_id INT,
     monthly_payment INT,
     contract_type_id INT,
-    contract_status ENUM,
+    contract_status contract_status DEFAULT 'pending',
     starting_payment_percentage INT,
     total_payment INT,
 
   FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE,
-  FOREIGN KEY (order_id) REFERENCES order(id) ON DELETE CASCADE,
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
   FOREIGN KEY (contract_type_id) REFERENCES contract_type(id) ON DELETE CASCADE
 
 );
 
-CREATE TABLE payments (
+CREATE TABLE payments(
   id SERIAL PRIMARY KEY,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  customer_id INT NOT NULL,
-  total_price DECIMAL(20, 2) NOT NULL,
-  contract_id INT,
-
-  FOREIGN KEY (customer_id) 
-  REFERENCES customer(id) 
-  ON DELETE CASCADE 
-  ON UPDATE NO ACTION,
-
-  FOREIGN KEY (contract_id) 
-  REFERENCES contract(id) 
-  ON DELETE CASCADE 
-  ON UPDATE NO ACTION
+  created_at TIMESTAMP NOT NULL,
+  order_id INT,
+  customer_id INT,
+  total_price INT NOT NULL,
+  payment_method varchar(255),
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  FOREIGN KEY (customer_id) REFERENCES customer(id) ON DELETE CASCADE
 );
 
 

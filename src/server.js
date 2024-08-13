@@ -6,6 +6,8 @@ import { categoryRoutes } from "./routes/category.routes.js";
 import { productRoutes } from "./routes/product.routes.js";
 import { customerRoutes } from "./routes/customer.routes.js";
 import { orderRoutes } from "./routes/orders.routes.js";
+import { contractRoutes } from "./routes/contract.routes.js";
+import { paymentRoutes } from "./routes/payment.routes.js";
 
 
 
@@ -20,6 +22,8 @@ app.use("/api/v1",productRoutes)
 app.use("/api/v1",categoryRoutes)
 app.use("/api/v1",customerRoutes)
 app.use("/api/v1",orderRoutes)
+app.use("/api/v1",contractRoutes)
+app.use("/api/v1",paymentRoutes)
 
 
 app.listen(appConfig.port, appConfig.host, () => {
